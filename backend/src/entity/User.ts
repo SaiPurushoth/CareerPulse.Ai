@@ -1,18 +1,38 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany, JoinColumn, OneToOne, ManyToOne } from "typeorm"
+import { Organisation } from "./Organisation";
+import { Role } from "./Roles";
 
-@Entity()
+@Entity({name:'users'})
 export class User {
+    @PrimaryGeneratedColumn("uuid")
+    id: string;
+  
+    @Column({ nullable: false })
+    first_name: string;
 
-    @PrimaryGeneratedColumn()
-    id: number
+    @Column({ nullable: false })
+    last_name: string;
 
-    @Column()
-    firstName: string
+    @Column({ nullable: false })
+    gender: string;
+  
+    @Column({ nullable: false })
+    email: string;
+  
+    @Column({ nullable: false })
+    password: string;
 
-    @Column()
-    lastName: string
-
-    @Column()
-    age: number
-
-}
+    @ManyToOne(() => Organisation)
+    @JoinColumn({name:'org_id'})
+    organisation: Organisation ;
+  
+    @OneToOne(() => Role)
+    @JoinColumn({name : 'role_id'})
+    role: Role;
+  
+    @CreateDateColumn()
+    created_on: Date;
+  
+    @UpdateDateColumn()
+    updated_on: Date;
+  }
